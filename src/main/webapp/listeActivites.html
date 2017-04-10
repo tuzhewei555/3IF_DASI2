@@ -18,25 +18,22 @@
             $(function() {
 
                 $.ajax({
-                    url: './ActionServlet',
+                    url: './ActionServlet?todo=listAll',
                     type: 'POST',
                     data: {
-                        action: '[...]',
-                        param: '[...]' // etc.
+                        action: 'listAll'
+                        //param: 'tenis' // etc.
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var activites = data.activites;
-                    var contenuHtml = '<ul>';
+                    var html = '<ul>';
                     var i;
-                    for (i = 0; i < activites.length; i++) {
-                        contenuHtml += '<li>' + '[...]' + '</li>';
+                    for (i = 0; i < data.length; i++) {
+                        html += '<li>' + data[i].denomination + '</li>';
                     }
-                    contenuHtml += '</ul>';
-                    $('#listeActivites').html(contenuHtml);
-
-
+                    html += '</ul>';
+                    $('#listeActivites').html(html);
                 })
                 .fail(function() {
                     $('#listeActivites').html('ERREUR de chargement');
