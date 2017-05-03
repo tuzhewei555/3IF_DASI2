@@ -4,10 +4,42 @@
         <servlet-name>ActionServlet</servlet-name>
         <servlet-class>fr.insa.dasi2.ActionServlet</servlet-class>
     </servlet>
+    
+    <!-- Accueil -->
+    <servlet>
+        <servlet-name>home</servlet-name>
+        <jsp-file>/vues/home.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>home</servlet-name>
+        <url-pattern>/vues/home</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Liste des activités -->
+    <servlet>
+        <servlet-name>activites_all</servlet-name>
+        <jsp-file>/vues/activites/all.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>activites_all</servlet-name>
+        <url-pattern>/vues/activites/all</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Activité en particulier -->
+    <servlet>
+        <servlet-name>activites_id</servlet-name>
+        <jsp-file>/vues/activites/id.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>activites_id</servlet-name>
+        <url-pattern>/vues/activites/id</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>ActionServlet</servlet-name>
-        <url-pattern>/ActionServlet</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30

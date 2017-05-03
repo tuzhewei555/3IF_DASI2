@@ -1,16 +1,17 @@
 package fr.insa.dasi2;
 
-import com.google.gson.Gson;
 import dao.JpaUtil;
+import fr.insa.dasi2.Controllers.ActivitesController;
+import fr.insa.dasi2.Controllers.Controller;
+import fr.insa.dasi2.Controllers.HomeController;
+import fr.insa.dasi2.Controllers.URLInfo;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import metier.modele.Activite;
-import metier.service.ServiceMetier;
 
 /**
  *
@@ -29,38 +30,52 @@ public class ActionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         JpaUtil.init();
-        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String todo = request.getParameter("todo");
-            switch (todo) {
-                case "listAll":
-                    List<Activite> acts = ServiceMetier.affichageListeActivites();
-                    /*if (null == acts) {
-                        out.println("null");
-                        return;
-                    }
-                    for (Activite act : acts) {
-                        out.println(" - " + act);
-                        out.println("<br>");
-                    }*/
-                    Gson r = new Gson();
-                    out.println(r.toJson(acts));
+            // Crée l'objet URLInfo
+            URLInfo urlInfo = new URLInfo(request);
+
+            // Extrait le nom du controleur
+            Controller controller = null;
+            String controllerName = urlInfo.getFixed(0);
+            if (null == controllerName) {
+                controllerName = "";
+            }
+
+            // Appelle le controleur
+            switch (controllerName) {
+                case "":
+                    // TODO: accueil
+                    out.println("accueil");
+                    controller = new HomeController();
+                    break;
+                case "activites":
+                    controller = new ActivitesController();
                     break;
                 default:
-                    out.println("<!DOCTYPE html>");
-                    out.println("<html>");
-                    out.println("<head>");
-                    out.println("<title>Servlet ActionServlet</title>");
-                    out.println("</head>");
-                    out.println("<body>");
-                    out.print("<p>");
-                    out.println("Action inconnue.");
-                    out.print("</p>");
-                    out.println("</body>");
-                    out.println("</html>");
+                    String message = "Contrôleur inconnu.<br/>";
+                    message += request.getContextPath() + "<br/>";
+                    message += request.getPathInfo() + "<br/>";
+                    message += request.getPathTranslated() + "<br/>";
+                    message += request.getQueryString() + "<br/>";
+                    message += request.getRequestURI() + "<br/>";
+                    message += request.getServletPath() + "<br/>";
+
+                    HtmlHelper.GenerateErrorPage("Servlet ActionServlet", message, out);
                     break;
             }
+            if (null != controller) {
+                RequestDispatcher rd = controller.execute(urlInfo, request);
+                response.setContentType(urlInfo.getContentType());
+                if (null != rd) {
+                    rd.forward(request, response);
+                } else {
+                    out.println(request.getAttribute("data"));
+                }
+            }
+        } catch (Exception e) {
+            out.print("Erreur :<br/>");
+            out.print(e.getMessage());
         } finally {
             out.close();
             JpaUtil.destroy();
