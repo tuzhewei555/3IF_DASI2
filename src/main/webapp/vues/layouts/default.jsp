@@ -5,7 +5,7 @@
 <%
     String view = (String) request.getAttribute("view");
     if (null == view) {
-        view = "errors/404";
+        view = "/vues/errors/404";
     }
 
     String title = (String) request.getAttribute("title");
@@ -40,6 +40,8 @@
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <jsp:include page="<%=view%>"/>
+        <div class="container">
+            <jsp:include page="<%=view%>"/>
+        </div>
     </body>
 </html>

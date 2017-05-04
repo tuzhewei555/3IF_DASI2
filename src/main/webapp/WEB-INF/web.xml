@@ -22,6 +22,17 @@
         <servlet-name>home</servlet-name>
         <url-pattern>/vues/home</url-pattern>
     </servlet-mapping>
+    <!-- Utilisateurs -->
+    <!-- Compte utilisateur -->
+    <servlet>
+        <servlet-name>users_account</servlet-name>
+        <jsp-file>/vues/users/account.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users_account</servlet-name>
+        <url-pattern>/vues/users/account</url-pattern>
+    </servlet-mapping>
+    <!-- Activites -->
     <!-- Liste des activités -->
     <servlet>
         <servlet-name>activites_all</servlet-name>
@@ -39,6 +50,16 @@
     <servlet-mapping>
         <servlet-name>activites_id</servlet-name>
         <url-pattern>/vues/activites/id</url-pattern>
+    </servlet-mapping>
+    <!-- Erreurs -->
+    <!-- 404 -->
+    <servlet>
+        <servlet-name>error_404</servlet-name>
+        <jsp-file>/vues/errors/404.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>error_404</servlet-name>
+        <url-pattern>/vues/errors/404</url-pattern>
     </servlet-mapping>
     <!-- Route tout le reste vers ActionServlet -->
     <servlet-mapping>
