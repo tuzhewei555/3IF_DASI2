@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Cet Servlet s'occupe de rediriger les requêtes vers les bons controleurs,
+ * puis vers la bonne vue ou en tant que données brutes.
  */
-public class ActionServlet extends HttpServlet {
+public class RouterServlet extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Redirige les requêtes reçues vers le bon controleur, puis suivant les
+     * indications du controleur redirige vers la vue ou en données brutes.
      *
      * @param request servlet request
      * @param response servlet response
@@ -30,8 +31,7 @@ public class ActionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         JpaUtil.init();
-        PrintWriter out = response.getWriter();
-        try {
+        try (PrintWriter out = response.getWriter()) {
             // Crée l'objet URLInfo
             URLInfo urlInfo = new URLInfo(request);
 
@@ -42,44 +42,57 @@ public class ActionServlet extends HttpServlet {
                 controllerName = "";
             }
 
-            // Appelle le controleur
+            // Route la requête vers le bon controleur
             switch (controllerName) {
                 case "":
-                    // TODO: accueil
-                    out.println("accueil");
+                case "home":
                     controller = new HomeController();
                     break;
                 case "activites":
                     controller = new ActivitesController();
                     break;
                 default:
-                    String message = "Contrôleur inconnu.<br/>";
-                    message += request.getContextPath() + "<br/>";
-                    message += request.getPathInfo() + "<br/>";
-                    message += request.getPathTranslated() + "<br/>";
-                    message += request.getQueryString() + "<br/>";
-                    message += request.getRequestURI() + "<br/>";
-                    message += request.getServletPath() + "<br/>";
-
-                    HtmlHelper.GenerateErrorPage("Servlet ActionServlet", message, out);
+                    send404(request, out);
                     break;
             }
+
+            // Si le controleur a été trouvé
             if (null != controller) {
+                // Lance le controleur et récupère le dispatcher
                 RequestDispatcher rd = controller.execute(urlInfo, request);
                 response.setContentType(urlInfo.getContentType());
+
+                // Si un dispatcher a été renvoyé, on l'appelle
                 if (null != rd) {
                     rd.forward(request, response);
-                } else {
+                } // Sinon on traîte envoi les données brutes
+                else if (null != request.getAttribute("data")) {
                     out.println(request.getAttribute("data"));
+                } // S'il n'y a pas de données, il s'agit d'une erreur 404
+                else {
+                    send404(request, out);
                 }
             }
-        } catch (Exception e) {
-            out.print("Erreur :<br/>");
-            out.print(e.getMessage());
         } finally {
-            out.close();
             JpaUtil.destroy();
         }
+    }
+    
+    /**
+     * Envoi une page 404 sur out.
+     * TODO: Créer des vues pour les erreurs
+     * @param request
+     * @param out 
+     */
+    private void send404(HttpServletRequest request, PrintWriter out) {
+        String message = "Erreur 404 - Ressource demandée inconnue :<br/>";
+        message += request.getContextPath() + "<br/>";
+        message += request.getPathInfo() + "<br/>";
+        message += request.getPathTranslated() + "<br/>";
+        message += request.getQueryString() + "<br/>";
+        message += request.getRequestURI() + "<br/>";
+        message += request.getServletPath() + "<br/>";
+        HtmlHelper.GenerateErrorPage("Erreur 404", message, out);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

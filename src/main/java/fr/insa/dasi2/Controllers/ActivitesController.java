@@ -23,31 +23,23 @@ public class ActivitesController extends Controller {
     }
 
     public void listAll() {
-        if ("json".equals(urlInfo.getType())) {
+        if (isJson()) {
             request.setAttribute("data", new Gson().toJson(ServiceMetier.affichageListeActivites()));
         } else {
-            dispatchTo("/vues/activites/all");
+            setTitle("Collect'IF - Liste des activités");
+            setView("/vues/activites/all");
         }
     }
 
     public void id() {
-        
-        System.err.println("1");
-        
         int id = Integer.parseInt(urlInfo.getFixed(1));
-        if ("json".equals(urlInfo.getType())) {
-            System.err.println("2");
-            
+        if (isJson()) {
             List<Activite> activites = ServiceMetier.affichageListeActivites();
-            System.err.println("Activités :");
-            System.err.println(activites);
-            
             request.setAttribute("data", new Gson().toJson(activites.get(id)));
         } else {
-            System.err.println("3");
-            
+            setTitle("Collect'IF - Activité");
             request.setAttribute("id", id);
-            dispatchTo("/vues/activites/id");
+            setView("/vues/activites/id");
         }
     }
 }

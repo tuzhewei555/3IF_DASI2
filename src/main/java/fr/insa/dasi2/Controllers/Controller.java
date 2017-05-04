@@ -10,22 +10,46 @@ public abstract class Controller {
 
     protected URLInfo urlInfo;
     protected HttpServletRequest request;
-    protected String dispatcherName;
+    protected String layout;
+    protected String view;
+    protected String title;
+
+    public final String DEFAULT_TITLE = "Title";
+    public final String DEFAULT_LAYOUT = "/vues/layouts/default";
 
     public RequestDispatcher execute(URLInfo urlInfo, HttpServletRequest request) {
         this.urlInfo = urlInfo;
         this.request = request;
-        this.dispatcherName = null;
+        this.title = DEFAULT_TITLE;
+        this.layout = DEFAULT_LAYOUT;
 
         this.route(urlInfo, request);
 
-        return (null != this.dispatcherName) ? request.getRequestDispatcher(this.dispatcherName) : null;
+        if (isJson()) {
+            return null;
+        } else {
+            request.setAttribute("title", this.title);
+            request.setAttribute("view", this.view);
+            request.setAttribute("layout", this.layout);
+            return (null != this.layout) ? request.getRequestDispatcher(this.layout) : null;
+        }
     }
-    
+
     protected abstract void route(URLInfo urlInfo, HttpServletRequest request);
-    
-    protected void dispatchTo(String where) {
-        this.dispatcherName = where;
+
+    protected void setTitle(String title) {
+        this.title = title;
     }
-    
+
+    protected void setView(String view) {
+        this.view = view;
+    }
+
+    protected void setLayout(String layout) {
+        this.layout = layout;
+    }
+
+    protected boolean isJson() {
+        return "json".equals(urlInfo.getType());
+    }
 }
