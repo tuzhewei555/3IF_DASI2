@@ -2,6 +2,7 @@ package fr.insa.dasi2;
 
 import dao.JpaUtil;
 import fr.insa.dasi2.Controllers.ActivitesController;
+import fr.insa.dasi2.Controllers.AdministratorsController;
 import fr.insa.dasi2.Controllers.Controller;
 import fr.insa.dasi2.Controllers.HomeController;
 import fr.insa.dasi2.Controllers.URLInfo;
@@ -50,6 +51,9 @@ public class RouterServlet extends HttpServlet {
                     break;
                 case "users":
                     controller = new UsersController();
+                    break;
+                case "administrators":
+                    controller = new AdministratorsController();
                     break;
                 case "activites":
                     controller = new ActivitesController();

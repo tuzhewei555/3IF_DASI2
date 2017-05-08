@@ -18,6 +18,10 @@
         <servlet-name>home</servlet-name>
         <jsp-file>/vues/home.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>AdministratorsController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.AdministratorsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>home</servlet-name>
         <url-pattern>/vues/home</url-pattern>
@@ -31,6 +35,23 @@
     <servlet-mapping>
         <servlet-name>users_account</servlet-name>
         <url-pattern>/vues/users/account</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>users_registration</servlet-name>
+        <jsp-file>/vues/users/registration/registration.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users_registration</servlet-name>
+        <url-pattern>/vues/users/registration</url-pattern>
+    </servlet-mapping>
+    <!-- Compte administrateur -->
+    <servlet>
+        <servlet-name>administrators_account</servlet-name>
+        <jsp-file>/vues/administrators/account.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>administrators_account</servlet-name>
+        <url-pattern>/vues/administrators/account</url-pattern>
     </servlet-mapping>
     <!-- Activites -->
     <!-- Liste des activités -->

@@ -19,11 +19,18 @@ public class UsersController extends Controller {
             account();
         } else if ("login".equals(action)) {
             
+        } else if ("registration".equals(action)) {
+            registration();
         }
     }
 
     public void account() {
-        setTitle("Collect'IF - Mon compte");
+        setTitle("Collect'IF - Log In");
         setView("/vues/users/account");
+    }
+
+    public void registration() {
+        setTitle("Collect'IF - Inscription");
+        setView("/vues/users/registration");
     }
 }
