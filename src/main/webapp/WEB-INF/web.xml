@@ -1,74 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>ActionServlet</servlet-name>
-        <servlet-class>fr.insa.dasi2.RouterServlet</servlet-class>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.HomeController</servlet-class>
     </servlet>
-    <!-- Layout -->
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern></url-pattern>
+    </servlet-mapping>
+    
     <servlet>
-        <servlet-name>default_layout</servlet-name>
-        <jsp-file>/vues/layouts/default.jsp</jsp-file>
+        <servlet-name>UsersController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.UsersController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>default_layout</servlet-name>
-        <url-pattern>/vues/layouts/default</url-pattern>
+        <servlet-name>UsersController</servlet-name>
+        <url-pattern>/users/*</url-pattern>
     </servlet-mapping>
-    <!-- Accueil -->
+    
     <servlet>
-        <servlet-name>home</servlet-name>
-        <jsp-file>/vues/home.jsp</jsp-file>
+        <servlet-name>ActivitesController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.ActivitesController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>home</servlet-name>
-        <url-pattern>/vues/home</url-pattern>
+        <servlet-name>ActivitesController</servlet-name>
+        <url-pattern>/activites/*</url-pattern>
     </servlet-mapping>
-    <!-- Utilisateurs -->
-    <!-- Compte utilisateur -->
-    <servlet>
-        <servlet-name>users_account</servlet-name>
-        <jsp-file>/vues/users/account.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>users_account</servlet-name>
-        <url-pattern>/vues/users/account</url-pattern>
-    </servlet-mapping>
-    <!-- Activites -->
-    <!-- Liste des activités -->
-    <servlet>
-        <servlet-name>activites_all</servlet-name>
-        <jsp-file>/vues/activites/all.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>activites_all</servlet-name>
-        <url-pattern>/vues/activites/all</url-pattern>
-    </servlet-mapping>
-    <!-- Activité en particulier -->
-    <servlet>
-        <servlet-name>activites_id</servlet-name>
-        <jsp-file>/vues/activites/id.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>activites_id</servlet-name>
-        <url-pattern>/vues/activites/id</url-pattern>
-    </servlet-mapping>
-    <!-- Erreurs -->
-    <!-- 404 -->
-    <servlet>
-        <servlet-name>error_404</servlet-name>
-        <jsp-file>/vues/errors/404.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>error_404</servlet-name>
-        <url-pattern>/vues/errors/404</url-pattern>
-    </servlet-mapping>
-    <!-- Route tout le reste vers ActionServlet -->
-    <servlet-mapping>
-        <servlet-name>ActionServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
+    
+    <!-- Pages d'erreur -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/vues/errors/404.jsp</location>
+    </error-page>
+    
+    <!-- Configuration -->
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
+    <!-- Connexion -->
+    <!--security-constraint>
+        <display-name>SecurityConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>WRCollection</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>TutorialUser</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>DEFAULT</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/users/login.jsp</form-login-page>
+            <form-error-page>/users/error.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <role-name>TutorialUser</role-name>
+    </security-role-->
 </web-app>

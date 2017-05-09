@@ -11,21 +11,21 @@ public class URLInfo {
 
     private String type;
     private ArrayList<String> fixed;
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
     public URLInfo(HttpServletRequest request) {
         this.request = request;
         this.type = "html"; // défaut
+        this.fixed = new ArrayList<>();
 
         // Récupère le chemin relatif
         String pathInfo = request.getPathInfo();
-        if (pathInfo.length() > 0) {
+        if (null != pathInfo && pathInfo.length() > 0) {
             if (pathInfo.charAt(0) == '/') {
                 pathInfo = pathInfo.substring(1);
             }
             
             // Extrait les paramètres positionels
-            this.fixed = new ArrayList<>();
             for (String param : pathInfo.split("/")) {
                 // Regarde s'il contient le type
                 if ("html".equals(param) || "json".equals(param)) {

@@ -1,29 +1,30 @@
 package fr.insa.dasi2.Controllers;
 
-import com.google.gson.Gson;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import metier.modele.Activite;
-import metier.service.ServiceMetier;
-
 /**
  *
  */
 public class UsersController extends Controller {
 
     @Override
-    public void route(URLInfo urlInfo, HttpServletRequest request) {
+    public void route(URLInfo urlInfo) {
         // Exécute la bonne action
-        String action = urlInfo.getFixed(1);
+        String action = urlInfo.getFixed(0);
         if (null == action || "".equals(action)) {
             account();
         } else if ("login".equals(action)) {
-            
+            login();
         }
     }
 
     public void account() {
         setTitle("Collect'IF - Mon compte");
-        setView("/vues/users/account");
+        setView("/vues/users/account.jsp");
+    }
+
+    public void login() {
+        setTitle("Collect'IF - Connexion");
+        setView("/vues/users/login.jsp");
+        
+        
     }
 }

@@ -1,11 +1,10 @@
 <%-- Ceci est un commentaire JSP --%>
 <%@page contentType="text/html"%>
-<%@page errorPage="erreur.jsp"%>
 <%@page import="java.util.*"%>
 <%
     String view = (String) request.getAttribute("view");
     if (null == view) {
-        view = "/vues/errors/404";
+        view = "/vues/errors/404.jsp";
     }
 
     String title = (String) request.getAttribute("title");
@@ -23,9 +22,9 @@
         <title><%=title%></title>
 
         <script>
-            // Il faut que l'URL termine par un "/"
+            /*/ Il faut que l'URL termine par un "/"
             if (window.location.href[window.location.href.length - 1] !== '/')
-                window.location.replace(window.location.href + "/");
+                window.location.replace(window.location.href + "/");*/
         </script>
 
         <!-- Latest compiled and minified CSS -->
