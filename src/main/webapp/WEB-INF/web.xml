@@ -22,6 +22,10 @@
         <servlet-name>AdministratorsController</servlet-name>
         <servlet-class>fr.insa.dasi2.Controllers.AdministratorsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reception</servlet-name>
+        <servlet-class>reception</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>home</servlet-name>
         <url-pattern>/vues/home</url-pattern>
@@ -37,11 +41,11 @@
         <url-pattern>/vues/users/account</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>users_registration</servlet-name>
+        <servlet-name>users_inscription</servlet-name>
         <jsp-file>/vues/users/registration/registration.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>users_registration</servlet-name>
+        <servlet-name>users_inscription</servlet-name>
         <url-pattern>/vues/users/registration</url-pattern>
     </servlet-mapping>
     <!-- Compte administrateur -->

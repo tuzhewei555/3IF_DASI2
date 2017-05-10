@@ -13,7 +13,7 @@ public class HomeController extends Controller {
     }
 
     public void home() {
-        setTitle("Collect'IF - Accueil");
+        setTitle("Collect'IF");
         setView("/vues/home");
     }
 }
