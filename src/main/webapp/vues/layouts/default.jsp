@@ -30,7 +30,7 @@
         <style>
             <jsp:include page="../css/main.css"/>
         </style>
-        
+
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <!-- Optional theme -->
@@ -57,6 +57,29 @@
                     </div>
                 </div>
             </nav>
+
+            <%
+                String successMessage = (String) request.getAttribute("successMessage");
+                if (null != successMessage) {
+            %>
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                <%= successMessage %>
+            </div>
+            <%
+                }
+
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                if (null != errorMessage) {
+            %>
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Erreur:</span>
+                <%= errorMessage %>
+            </div>
+            <%
+                }
+            %>
 
             <jsp:include page="<%=view%>"/>
 

@@ -4,6 +4,8 @@ import dao.JpaUtil;
 import fr.insa.dasi2.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ public abstract class Controller extends HttpServlet {
 
     protected URLInfo urlInfo;
     protected HttpServletRequest request;
+    protected HttpServletResponse response;
     protected String layout;
     protected String view;
     protected String title;
@@ -31,6 +34,7 @@ public abstract class Controller extends HttpServlet {
         try {
             this.urlInfo = new URLInfo(request);
             this.request = request;
+            this.response = response;
             this.title = DEFAULT_TITLE;
             this.layout = DEFAULT_LAYOUT;
             this.view = DEFAULT_VIEW;
@@ -69,6 +73,23 @@ public abstract class Controller extends HttpServlet {
 
     protected void setLayout(String layout) {
         this.layout = layout;
+    }
+
+    protected void setError(String error) {
+        this.request.setAttribute("errorMessage", error);
+    }
+
+    protected void setSuccess(String success) {
+        this.request.setAttribute("successMessage", success);
+    }
+
+    protected void redirect(String where) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(where);
+            rd.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     protected boolean isJson() {
