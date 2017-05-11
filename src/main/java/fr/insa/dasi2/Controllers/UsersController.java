@@ -13,6 +13,8 @@ public class UsersController extends Controller {
             account();
         } else if ("login".equals(action)) {
             login();
+        } else if ("signup".equals(action)) {
+            signup();
         }
     }
 
@@ -26,5 +28,10 @@ public class UsersController extends Controller {
         setView("/vues/users/login.jsp");
         
         
+    }
+
+    public void signup() {
+        setTitle("Collect'IF - Inscription");
+        setView("/vues/users/signup.jsp");
     }
 }

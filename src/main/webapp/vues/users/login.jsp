@@ -1,10 +1,13 @@
 
-<h1>Connexion</h1>
-
-<form>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Adresse mail</label>
-        <input type="email" class="form-control" id="loginEmail" placeholder="Adresse mail">
-    </div>
-    <button type="submit" class="btn btn-default">Connexion</button>
-</form>
+<div class="col-md-6 col-md-offset-3" style="margin-top: 20%">
+    <h2>Connexion</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="email">Adresse mail</label>
+            <input type="email" class="form-control" name="email" placeholder="Adresse mail">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-default">Connexion</button>
+        </div>
+    </form>
+</div>
