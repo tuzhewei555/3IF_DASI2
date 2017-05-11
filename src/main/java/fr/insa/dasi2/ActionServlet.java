@@ -5,12 +5,17 @@
  */
 package fr.insa.dasi2;
 
+import dao.JpaUtil;
 import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
+import fr.insa.dasi2.Actions.ActionLogin;
+import fr.insa.dasi2.Actions.ActionLogout;
+import fr.insa.dasi2.Actions.ActionSignup;
 import fr.insa.dasi2.Views.View;
 import fr.insa.dasi2.Views.ViewActivitesAll;
+import fr.insa.dasi2.Views.ViewEmpty;
+import fr.insa.dasi2.Views.ViewAdherent;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +27,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ActionServlet extends HttpServlet {
 
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        JpaUtil.init();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        JpaUtil.destroy();
+    }
+
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -31,21 +48,31 @@ public class ActionServlet extends HttpServlet {
             return;
         }
 
+        // TODO: Créer un filtre
         // Récupère l'action et la vue
         Action action = null;
-        View view = null;
+        View view = new ViewEmpty();
         switch (todo) {
             case "activites_all":
                 action = new ActionActivitesAll();
                 view = new ViewActivitesAll();
                 break;
+            case "login":
+                action = new ActionLogin();
+                view = new ViewAdherent();
+                break;
+            case "logout":
+                action = new ActionLogout();
+                break;
+            case "signup":
+                action = new ActionSignup();
+                view = new ViewAdherent();
+                break;
         }
         if (null != action) {
             action.process(request);
         }
-        if (null != view) {
-            view.process(request, response);
-        }
+        view.process(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

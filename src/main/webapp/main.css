@@ -1,10 +1,10 @@
+.margin-top-20 {
+    margin-top:20px;
+}
+
 footer {
     position: fixed;
     bottom: 0;
     padding: 20px;
     width: inherit;
-}
-
-footer #admin_div {
-    float: right;
 }

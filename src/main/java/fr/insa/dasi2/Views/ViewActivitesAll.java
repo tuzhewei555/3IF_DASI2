@@ -19,6 +19,7 @@ public class ViewActivitesAll extends View {
             List<Activite> activites = (List<Activite>) request.getAttribute("activites");
             if (null != activites) {
                 out.println(new Gson().toJson(activites));
+                response.setContentType("application/json");
             }
         }
     }

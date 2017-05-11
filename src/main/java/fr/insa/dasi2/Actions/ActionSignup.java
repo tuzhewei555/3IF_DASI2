@@ -3,34 +3,28 @@ package fr.insa.dasi2.Actions;
 import javax.servlet.http.HttpServletRequest;
 import metier.modele.Adherent;
 import metier.service.ServiceMetier;
+import static metier.service.ServiceMetier.inscription;
 
 /**
  *
  */
-public class ActionLogin extends Action {
+public class ActionSignup extends Action {
 
     @Override
     public void process(HttpServletRequest request) {
 
         // Récupère les paramètres
-        String email = request.getParameter("email");
-        String strId = request.getParameter("identifiant");
+        String lastName = request.getParameter("last_name");
+        String firstName = request.getParameter("first_name");
+        String address = request.getParameter("address");
+        String email1 = request.getParameter("email1");
+        String email2 = request.getParameter("email2");
 
         // Si un des deux est nul, on ne fait rien
-        if (null == email || null == strId) {
+        if (null == lastName || null == firstName || null == address || null == email1 || null == email2) {
             request.setAttribute("adherent", null);
-            return;
         }
 
-        // Récupère l'id
-        Long id;
-        try {
-            id = Long.parseLong(strId);
-        } catch (NumberFormatException e) {
-            request.setAttribute("adherent", null);
-            return;
-        }
-        
         // Si il y a quelqu'un de connecté, on le déconnecte
         Adherent adherent = getAdherent(request);
         if (null != adherent) {
@@ -38,8 +32,8 @@ public class ActionLogin extends Action {
         }
         request.getSession().invalidate();
 
-        // Récupère l'adhérent
-        adherent = ServiceMetier.connecter(email, id);
+        // Essaie d'inscrire
+        adherent = ServiceMetier.inscription(lastName, firstName, address, email1, email2);
 
         // Ajoute l'adhérent à la session
         if (null != adherent) {
