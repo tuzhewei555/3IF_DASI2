@@ -22,6 +22,14 @@
         <servlet-name>ActivitesController</servlet-name>
         <servlet-class>fr.insa.dasi2.Controllers.ActivitesController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdministratorsController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.AdministratorsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reception</servlet-name>
+        <servlet-class>reception</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ActivitesController</servlet-name>
         <url-pattern>/activites/*</url-pattern>

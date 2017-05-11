@@ -34,4 +34,9 @@ public class UsersController extends Controller {
         setTitle("Collect'IF - Inscription");
         setView("/vues/users/signup.jsp");
     }
+
+    public void registration() {
+        setTitle("Collect'IF - Inscription");
+        setView("/vues/users/registration");
+    }
 }
