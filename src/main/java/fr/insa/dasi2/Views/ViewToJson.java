@@ -11,7 +11,7 @@ import metier.modele.Activite;
 /**
  *
  */
-public class ViewActivitesAll extends View {
+public class ViewToJson extends View {
     
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -30,24 +30,29 @@ public class UserFilter implements Filter {
         String[] allowedPages = {
             request.getContextPath() + "/login.html",
             request.getContextPath() + "/signup.html",
-            request.getContextPath() + "/",
+            request.getContextPath() + "/"
+        };
+        String[] allowedStart = {
             request.getContextPath() + "/ActionServlet",
-            request.getContextPath() + "/main.css"
+            request.getContextPath() + "/css/",
+            request.getContextPath() + "/js/"
         };
         
         boolean loggedIn = session != null && session.getAttribute("adherent") != null;
         boolean allowed = false;
         String requestedURI = request.getRequestURI();
         for (String s : allowedPages) {
-            System.out.println("Checking: " + requestedURI + "==" + s);
             if (requestedURI.equals(s)) {
                 allowed = true;
-                System.out.println("Allowed on page: "+ requestedURI);
                 break;
             }
         }
-
-        System.out.println("loggedIn: " + loggedIn);
+        for (String s : allowedStart) {
+            if (requestedURI.startsWith(s)) {
+                allowed = true;
+                break;
+            }
+        }
 
         if (loggedIn || allowed) {
             chain.doFilter(request, response);

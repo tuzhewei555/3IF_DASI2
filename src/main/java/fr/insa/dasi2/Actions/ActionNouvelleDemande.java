@@ -7,7 +7,7 @@ import metier.service.ServiceMetier;
 /**
  *
  */
-public class ActionSignup extends Action {
+public class ActionNouvelleDemande extends Action {
 
     @Override
     public void process(HttpServletRequest request) {

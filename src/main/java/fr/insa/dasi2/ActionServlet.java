@@ -10,9 +10,10 @@ import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
 import fr.insa.dasi2.Actions.ActionLogin;
 import fr.insa.dasi2.Actions.ActionLogout;
+import fr.insa.dasi2.Actions.ActionNouvelleDemande;
 import fr.insa.dasi2.Actions.ActionSignup;
 import fr.insa.dasi2.Views.View;
-import fr.insa.dasi2.Views.ViewActivitesAll;
+import fr.insa.dasi2.Views.ViewToJson;
 import fr.insa.dasi2.Views.ViewEmpty;
 import fr.insa.dasi2.Views.ViewAdherent;
 import java.io.IOException;
@@ -53,10 +54,6 @@ public class ActionServlet extends HttpServlet {
         Action action = null;
         View view = new ViewEmpty();
         switch (todo) {
-            case "activites_all":
-                action = new ActionActivitesAll();
-                view = new ViewActivitesAll();
-                break;
             case "login":
                 action = new ActionLogin();
                 view = new ViewAdherent();
@@ -66,6 +63,14 @@ public class ActionServlet extends HttpServlet {
                 break;
             case "signup":
                 action = new ActionSignup();
+                view = new ViewAdherent();
+                break;
+            case "activites_all":
+                action = new ActionActivitesAll();
+                view = new ViewToJson();
+                break;
+            case "nouvelleDemande":
+                action = new ActionNouvelleDemande();
                 view = new ViewAdherent();
                 break;
         }
