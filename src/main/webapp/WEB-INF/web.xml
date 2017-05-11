@@ -6,9 +6,8 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
-        <url-pattern></url-pattern>
+        <url-pattern/>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>UsersController</servlet-name>
         <servlet-class>fr.insa.dasi2.Controllers.UsersController</servlet-class>
@@ -17,30 +16,27 @@
         <servlet-name>UsersController</servlet-name>
         <url-pattern>/users/*</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>ActivitesController</servlet-name>
         <servlet-class>fr.insa.dasi2.Controllers.ActivitesController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdministratorsController</servlet-name>
-        <servlet-class>fr.insa.dasi2.Controllers.AdministratorsController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>reception</servlet-name>
-        <servlet-class>reception</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ActivitesController</servlet-name>
         <url-pattern>/activites/*</url-pattern>
     </servlet-mapping>
-    
+    <servlet>
+        <servlet-name>AdminController</servlet-name>
+        <servlet-class>fr.insa.dasi2.Controllers.AdminController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminController</servlet-name>
+        <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
     <!-- Pages d'erreur -->
     <error-page>
         <error-code>404</error-code>
         <location>/vues/errors/404.jsp</location>
     </error-page>
-    
     <!-- Configuration -->
     <session-config>
         <session-timeout>
