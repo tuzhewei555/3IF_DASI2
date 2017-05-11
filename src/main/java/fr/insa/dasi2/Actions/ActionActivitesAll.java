@@ -11,13 +11,12 @@ public class ActionActivitesAll extends Action {
 
     @Override
     public void process(HttpServletRequest request) {
-        System.err.println("1");
         JpaUtil.init();
         try {
             request.setAttribute("activites", ServiceMetier.affichageListeActivites());
         } finally {
             JpaUtil.destroy();
         }
-        System.err.println("2");
     }
+    
 }

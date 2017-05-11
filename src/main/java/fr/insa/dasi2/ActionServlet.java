@@ -8,6 +8,7 @@ package fr.insa.dasi2;
 import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
 import fr.insa.dasi2.Views.View;
+import fr.insa.dasi2.Views.ViewActivitesAll;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -30,19 +31,21 @@ public class ActionServlet extends HttpServlet {
             return;
         }
 
-        // Controleur
+        // Récupère l'action et la vue
         Action action = null;
+        View view = null;
         switch (todo) {
             case "activites_all":
                 action = new ActionActivitesAll();
+                view = new ViewActivitesAll();
                 break;
         }
         if (null != action) {
             action.process(request);
         }
-
-        // Vue
-        View.process(request, response);
+        if (null != view) {
+            view.process(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
