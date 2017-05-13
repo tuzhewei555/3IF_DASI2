@@ -25,7 +25,7 @@
 
             <div id="alert_success" class="alert alert-success" style="display: none" role="alert">
                 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                Demande créée : <span id="alert_success_message"></span> !
+                Demande créée : <span id="alert_success_demande"></span> !
             </div>
 
             <div class="col-md-6 col-md-offset-3">
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="date">Date</label>
                         <div class="input-group date" id="datetimepicker">
-                            <input type='text' class="form-control" id="date" />
+                            <input type='text' class="form-control" id="date" name="date" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="col-md-2 col-md-offset-8">
-                            <button type="submit" class="btn btn-default btn-success btn-lg">
+                            <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider">
                                 <span class="glyphicon glyphicon-ok"></span> Valider
                             </button>
                         </div>
@@ -72,7 +72,9 @@
         <script>
             $(document).ready(function () {
                 $('#datetimepicker').datetimepicker({
-                    locale: 'fr'
+                    locale: 'en',
+                    minDate: moment(),
+                    format: "MM/DD/YYYY"
                 });
 
                 // Liste des activités
@@ -85,7 +87,7 @@
                 }).done(function (data) {
                     if (!data) {
                         $('#alert_error_message').html("Impossible de récupérer la liste des activités.");
-                        $('#alert_error').show();
+                        $('#alert_error').fadeIn(500);
                         $('#alert_success').hide();
                     } else {
                         $('#alert_error').hide();
@@ -94,33 +96,22 @@
                             let suffix = data[i].payant ? ' €' : '';
                             $('#activities').append($('<option>', {
                                 text: data[i].denomination + suffix,
-                                value: data[i].id
+                                value: data[i].denomination
                             }));
                         }
                     }
                 }).fail(function () {
                     $('#alert_error_message').html("Impossible de récupérer la liste des activités.");
-                    $('#alert_error').show();
+                    $('#alert_error').fadeIn(500);
                     $('#alert_success').hide();
                 });
 
                 // Envoi du formulaire
                 $('#nouvelleDemande_form').submit(function (e) {
                     e.preventDefault();
+                    $('#btnValider').prop('disabled', true);
 
-                    // Vérification de la date
-                    var selectedDate = new Date($('#date').value);
-                    var now = new Date();
-                    console.debug($);
-                    console.debug($('#date').value);
-                    console.debug(selectedDate);
-                    console.debug(now);
-                    if (!selectedDate || !now || selectedDate < now) { // La date est passée, on refuse
-                        $('#alert_error_name').html("La date ne doit pas être passée.");
-                        return;
-                    }
-
-                    // Envoi
+                    // Envoi du formulaire
                     $.ajax({
                         url: './ActionServlet',
                         type: "POST",
@@ -128,20 +119,24 @@
                     }).done(function (data) {
                         console.debug(data);
                         if (!data) {
-                            $('#alert_error_name').html("yolo.");
-                            $('#alert_error').show();
+                            $('#alert_error_message').html("Erreur lors de la création de la demande.");
+                            $('#alert_error').fadeIn(500);
                             $('#alert_success').hide();
+                            $('#btnValider').prop('disabled', false);
                         } else {
+                            var demande = data.denomination + ", le " + moment(data.date, 'MM/DD/YYYY').locale('fr').format('LL') + " " + data.moment;
+                            
                             $('#alert_error').hide();
-                            $('#alert_success_name').html(data.prenom + " " + data.nom + " #" + data.id);
-                            $('#alert_success').show();
+                            $('#alert_success_demande').html(demande);
+                            $('#alert_success').fadeIn(500);
                             setTimeout(function () {
-                                window.location = './login.html';
-                            }, 5000);
+                                window.location = './userAccount.html';
+                            }, 2000);
                         }
                     }).fail(function () {
-                        $('#alert_error_name').html("Erreur lors de la création de la demande.");
-                        $('#alert_error').show();
+                        $('#alert_error_message').html("Erreur lors de la création de la demande.");
+                        $('#alert_error').fadeIn(500);
+                        $('#btnValider').prop('disabled', false);
                     });
                 });
             }

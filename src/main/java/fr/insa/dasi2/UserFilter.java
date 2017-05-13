@@ -22,7 +22,7 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        
+
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
@@ -37,7 +37,7 @@ public class UserFilter implements Filter {
             request.getContextPath() + "/css/",
             request.getContextPath() + "/js/"
         };
-        
+
         boolean loggedIn = session != null && session.getAttribute("adherent") != null;
         boolean allowed = false;
         String requestedURI = request.getRequestURI();

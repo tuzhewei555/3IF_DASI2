@@ -69,18 +69,18 @@
                     }).done(function (data) {
                         console.debug(data);
                         if (!data) {
-                            $('#alert_error').show();
+                            $('#alert_error').fadeIn(500);
                             $('#alert_success').hide();
                         } else {
                             $('#alert_error').hide();
                             $('#alert_success_name').html(data.prenom + " " + data.nom + " #" + data.id);
-                            $('#alert_success').show();
+                            $('#alert_success').fadeIn(500);
                             setTimeout(function () {
                                 window.location = './login.html';
                             }, 5000);
                         }
                     }).fail(function () {
-                        $('#alert_error').show();
+                        $('#alert_error').fadeIn(500);
                     });
                 });
             });

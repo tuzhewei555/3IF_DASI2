@@ -19,7 +19,7 @@ public class ActionSignup extends Action {
         String email1 = request.getParameter("email1");
         String email2 = request.getParameter("email2");
 
-        // Si un des deux est nul, on ne fait rien
+        // Si un des paramètres est nul, on ne fait rien
         if (null == lastName || null == firstName || null == address || null == email1 || null == email2) {
             request.setAttribute("adherent", null);
         }
