@@ -8,6 +8,7 @@ package fr.insa.dasi2;
 import dao.JpaUtil;
 import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
+import fr.insa.dasi2.Actions.ActionAdminEvenement;
 import fr.insa.dasi2.Actions.ActionLogin;
 import fr.insa.dasi2.Actions.ActionLogout;
 import fr.insa.dasi2.Actions.ActionNouvelleDemande;
@@ -16,6 +17,7 @@ import fr.insa.dasi2.Views.View;
 import fr.insa.dasi2.Views.ViewToJson;
 import fr.insa.dasi2.Views.ViewEmpty;
 import fr.insa.dasi2.Views.ViewAdherent;
+import fr.insa.dasi2.Views.ViewToJsonEvenement;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -72,6 +74,10 @@ public class ActionServlet extends HttpServlet {
             case "nouvelleDemande":
                 action = new ActionNouvelleDemande();
                 view = new ViewAdherent();
+                break;
+            case "evenements":
+                action = new ActionAdminEvenement(); 
+                view = new ViewToJsonEvenement();             
                 break;
         }
         if (null != action) {
