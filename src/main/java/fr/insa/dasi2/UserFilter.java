@@ -30,6 +30,7 @@ public class UserFilter implements Filter {
         String[] allowedPages = {
             request.getContextPath() + "/login.html",
             request.getContextPath() + "/signup.html",
+            request.getContextPath() + "/adminDashboard.html",
             request.getContextPath() + "/"
         };
         String[] allowedStart = {
