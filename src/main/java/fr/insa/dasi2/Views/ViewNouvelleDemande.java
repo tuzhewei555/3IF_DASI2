@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Demande;
-import metier.modele.Demande.Moment;
 
 /**
  *
@@ -27,17 +26,10 @@ public class ViewNouvelleDemande extends View {
                 jsonObject.addProperty("denomination", demande.getAct().getDenomination());
                 jsonObject.addProperty("date", dateStr);
                 jsonObject.addProperty("moment", momentToString(demande.getMoment()));
+                
                 out.println(new Gson().toJson(jsonObject));
                 response.setContentType("application/json");
             }
         }
     }
-    
-    private String momentToString(Moment moment) {
-        if (moment == Moment.apresmidi) {
-            return "après-midi";
-        }
-        return moment.toString();
-    }
-
 }

@@ -1,22 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.insa.dasi2;
 
 import dao.JpaUtil;
 import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
-import fr.insa.dasi2.Actions.ActionAdminEvenement;
+import fr.insa.dasi2.Actions.ActionAdminEvenementsAll;
 import fr.insa.dasi2.Actions.ActionLogin;
 import fr.insa.dasi2.Actions.ActionLogout;
+import fr.insa.dasi2.Actions.ActionMesDemandes;
 import fr.insa.dasi2.Actions.ActionNouvelleDemande;
 import fr.insa.dasi2.Actions.ActionSignup;
 import fr.insa.dasi2.Views.View;
 import fr.insa.dasi2.Views.ViewActivitesAll;
 import fr.insa.dasi2.Views.ViewEmpty;
 import fr.insa.dasi2.Views.ViewAdherent;
+import fr.insa.dasi2.Views.ViewDemandesAll;
 import fr.insa.dasi2.Views.ViewEvenementsAll;
 import fr.insa.dasi2.Views.ViewNouvelleDemande;
 import java.io.IOException;
@@ -27,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author totorigolo
  */
 public class ActionServlet extends HttpServlet {
 
@@ -72,13 +68,17 @@ public class ActionServlet extends HttpServlet {
                 action = new ActionActivitesAll();
                 view = new ViewActivitesAll();
                 break;
-            case "nouvelleDemande":
+            case "nouvelle_demande":
                 action = new ActionNouvelleDemande();
                 view = new ViewNouvelleDemande();
                 break;
-            case "evenements":
-                action = new ActionAdminEvenement(); 
-                view = new ViewEvenementsAll();             
+            case "mes_demandes":
+                action = new ActionMesDemandes();
+                view = new ViewDemandesAll();
+                break;
+            case "evenements_all":
+                action = new ActionAdminEvenementsAll();
+                view = new ViewEvenementsAll();
                 break;
         }
         if (null != action) {

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Collect'IF - Liste des évènements</title>
+
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <script src="./js/jquery-3.2.1.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/main.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Collect'IF &ndash; Liste des Évènements</h1>
+            <div id='listeEvents'>
+                <span>chargement en cours...</span>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'evenements_all'
+                    },
+                    dataType: 'json'
+                }).done(function (data) {
+                    console.debug(data);
+                    
+                    var html = (data.length > 0) ? '' : '<p>Aucun évènement</p>';
+                    for (var i = 0; i < data.length; i++) {
+                        var s = (data[i].nbParticipants >= 2) ? 's' : '';
+                        
+                        html += '<li>';
+                        html += '<a href="./' + data[i].id + '">';
+                        html += data[i].denomination;
+                        html += ' @ ' + data[i].lieu;
+                        html += ' le ' + data[i].date + ' ' + data[i].moment;
+                        html += '</a> -> ';
+                        html += data[i].nbParticipants + ' participant' + s;
+                        html += '</li>';
+                    }
+                    
+                    $('#listeEvents').html('<ul>'+html+'</ul>');
+                }).fail(function () {
+                    $('#listeEvents').html('ERREUR de chargement');
+                }).always(function () {
+                    //
+                });
+            });
+        </script>
+    </body>
+</html>

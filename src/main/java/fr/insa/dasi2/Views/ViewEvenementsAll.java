@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,34 +19,27 @@ public class ViewEvenementsAll extends View {
     
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             List<Evenement> evenements = (List<Evenement>) request.getAttribute("evenements");
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");
             if (null != evenements) {
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd/YYYY");
                 
-                printListeEvenements(out,evenements);
-                System.out.println(evenements); 
-                //out.println(new Gson().toJson(evenements));
+                JsonArray jsonArray = new JsonArray();
+                for (Evenement evenement : evenements) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("id", evenement.getId());
+                    jsonObject.addProperty("activity", evenement.getAct().getDenomination());
+                    jsonObject.addProperty("lieu", evenement.getLieu().getDenomination());
+                    jsonObject.addProperty("date", df.format(evenement.getDate()));
+                    jsonObject.addProperty("moment", momentToString(evenement.getMoment()));
+                    jsonObject.addProperty("nbParticipants", evenement.getListAdherent().size());
+                    
+                    jsonArray.add(jsonObject);
+                }
+                
+                out.println(new Gson().toJson(jsonArray));
                 response.setContentType("application/json");
             }
         }
     }
-    public static void printListeEvenements(PrintWriter out, List<Evenement> evenements){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonArray jsonListe = new JsonArray();
-        for(Evenement e: evenements){
-            JsonObject jsonEvenement = new JsonObject();
-            jsonEvenement.addProperty("date", e.getDate().toString());
-            jsonEvenement.addProperty("activity", e.getAct().getDenomination());
-            jsonListe.add(jsonEvenement);
-        }
-        JsonObject container =new JsonObject();
-        container.add("evenements",jsonListe);
-        System.out.println(gson.toJson(container)); 
-        out.println(gson.toJson(container));
-    }
-
 }
