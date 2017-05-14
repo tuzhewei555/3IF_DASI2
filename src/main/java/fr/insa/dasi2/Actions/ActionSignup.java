@@ -1,8 +1,11 @@
 package fr.insa.dasi2.Actions;
 
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import metier.modele.Adherent;
+import metier.modele.Adherent_;
 import metier.service.ServiceMetier;
+import metier.service.ServiceTechnique;
 
 /**
  *
@@ -41,6 +44,14 @@ public class ActionSignup extends Action {
 
         // Mets l'adhérent dans la requête
         request.setAttribute("adherent", adherent);
+
+        // PAS A NOUS DE LE FAIRE NORMALEMENT
+        // Envoi le mail si l'évènement est créé
+        if (null != adherent) {
+            System.out.println(ServiceTechnique.envoieMailInscriptionSucces(adherent));
+        } else {
+            System.out.println(ServiceTechnique.envoieMailInscriptionEchec(email1, firstName));
+        }
     }
 
 }

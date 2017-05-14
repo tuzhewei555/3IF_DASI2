@@ -117,7 +117,7 @@
                             $('#btnValider').prop('disabled', false);
                         } else {
                             $('#alert_error').hide();
-                            $('#alert_success_message').html(data);
+                            $('#alert_success_message').html($('#lieux').find('option:selected').text() + '.' + data);
                             $('#alert_success').fadeIn(500);
                             setTimeout(function () {
                                 window.location = './admin_dashboard.html';
