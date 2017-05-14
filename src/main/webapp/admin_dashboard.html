@@ -15,8 +15,27 @@
     <body>
         <div class="container">
             <h1>Collect'IF &ndash; Liste des Évènements</h1>
-            <div id='listeEvents'>
-                <span>chargement en cours...</span>
+
+            <div id="alert_error" class="alert alert-danger" style="display: none" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Erreur : </span>
+                <span id="alert_error_message">Impossible de récupérer les demandes.</span>
+            </div>
+
+            <table class="table table-striped table-hover row-4">
+                <thead>
+                    <tr>
+                        <th class="col-sm-1">#</th>
+                        <th class="col-sm-3">Activité</th>
+                        <th class="col-sm-3">Date</th>
+                        <th class="col-sm-4">Lieu</th>
+                        <th class="col-sm-1">PAF</th>
+                    </tr>
+                </thead>
+                <tbody id="table_events"></tbody>
+            </table>
+            <div class="col-md-2">
+                <a role="button" class="btn btn-default" href="./mon_compte.html">Retour</a>
             </div>
         </div>
 
@@ -30,29 +49,43 @@
                     },
                     dataType: 'json'
                 }).done(function (data) {
-                    console.debug(data);
-                    
-                    var html = (data.length > 0) ? '' : '<p>Aucun évènement</p>';
-                    for (var i = 0; i < data.length; i++) {
-                        var s = (data[i].nbParticipants >= 2) ? 's' : '';
-                        
-                        html += '<li>';
-                        html += '<a href="./' + data[i].id + '">';
-                        html += data[i].denomination;
-                        html += ' @ ' + data[i].lieu;
-                        html += ' le ' + data[i].date + ' ' + data[i].moment;
-                        html += '</a> -> ';
-                        html += data[i].nbParticipants + ' participant' + s;
-                        html += '</li>';
+                    if (!data) {
+                        $('#alert_error').fadeIn(500);
+                    } else {
+                        $('#alert_error').hide();
+
+                        function btnLieu(id) {
+                            return '<a role="button" class="btn btn-default" href="admin_lieu.html?' + id + '">Définir</a>';
+                        }
+                        function btnPaf(id) {
+                            return '<a role="button" class="btn btn-default" href="admin_paf.html?' + id + '">Définir</a>';
+                        }
+
+                        var now = moment();
+                        var tbody = $('#table_events');
+                        data.forEach(function (event) {
+                            var lieu = (!event.lieu) ? btnLieu(event.id) : event.lieu;
+                            var paf = (event.payant) ? (!event.paf || event.paf < 0) ? btnPaf(event.id) : (event.paf + '&nbsp;&euro;') : '';
+                            var date = moment(event.date, 'MM/DD/YYYY').locale('fr');
+
+                            tbody.append(
+                                    '<tr>' +
+                                    '<th>' + event.id + '</th>' +
+                                    '<td>' + event.activity + '</td>' +
+                                    '<td> le ' + date.format('LL') + ' ' + event.moment +
+                                    '</td>' +
+                                    '<td>' + lieu + '</td>' +
+                                    '<td>' + paf + '</td>' +
+                                    '</tr>'
+                                    );
+                        });
                     }
-                    
-                    $('#listeEvents').html('<ul>'+html+'</ul>');
                 }).fail(function () {
-                    $('#listeEvents').html('ERREUR de chargement');
-                }).always(function () {
-                    //
+                    $('#alert_error').fadeIn(500);
                 });
             });
         </script>
+        <script src="./js/moment.js"></script>
+        <script src="./js/fr.js"></script>
     </body>
 </html>

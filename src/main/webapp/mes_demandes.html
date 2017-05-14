@@ -58,16 +58,16 @@
                         data.forEach(function (demande) {
                             var date = moment(demande.date, 'MM/DD/YYYY').locale('fr');
                             var color = (date.isBefore(now)) ? 'success' : '';
-                            var icon = (demande.payant) ? 'euro' : 'gift';
                             var payant = (demande.payant) ? 'Oui' : 'Non';
                             tbody.append(
                                     '<tr class="' + color + '">' +
                                     '<td>' + demande.activity + '</td>' +
                                     '<td>' +
                                     'le ' + date.format('LL') +
-                                    ', ' + date.fromNow() + '</td>' +
+                                    ', ' + date.fromNow() +
+                                    '</td>' +
                                     '<td>' + demande.moment + '</td>' +
-                                    '<td>' + payant + '&nbsp;&nbsp;<span class="glyphicon glyphicon-' + icon + '"></span></td>' +
+                                    '<td>' + payant + '</td>' +
                                     '</tr>'
                                     );
                         });

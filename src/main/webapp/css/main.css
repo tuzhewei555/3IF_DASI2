@@ -20,6 +20,15 @@ footer {
     width: inherit;
 }
 
+#map {
+    height: 500px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.table > tbody > tr > th, .table > tbody > tr > td {
+    vertical-align: middle;
+}
+
 /* Rends les <tbody> scrollables * /
 thead, tbody, tr, td, th {
     display: block;

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Collect'IF - Choisir PAF</title>
+
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <script src="./js/jquery-3.2.1.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/main.css">
+        <link rel="stylesheet" href="./css/bootstrap-datetimepicker.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Collect'IF &ndash; Choisir PAF</h1>
+
+            <div id="alert_error" class="alert alert-danger" style="display: none" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Erreur : </span>
+                <span id="alert_error_message">Erreur lors de la mise à jour du PAF.</span>
+            </div>
+
+            <div id="alert_success" class="alert alert-success" style="display: none" role="alert">
+                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                PAF défini : <span id="alert_success_message"></span>
+            </div>
+
+            <div class="col-md-6 col-md-offset-3">
+                <h2>PAF</h2>
+                <form method="POST" id="choisir_paf_form">
+                    <input name="action" value="definir_paf" hidden />
+                    <input name="id" value="-1" hidden id="id_input" />
+                    <div class="form-group">
+                        <label for="paf">Prix</label>
+                        <input type="text" class="form-control" name="paf" id="paf" placeholder="Définissez un prix." />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a role="button" class="btn btn-default" href="./admin_dashboard.html">Retour</a>
+                        </div>
+
+                        <div class="col-md-2 col-md-offset-8">
+                            <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider">
+                                <span class="glyphicon glyphicon-ok"></span> Valider
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                // Màj du champ caché id
+                $('#id_input').prop('value', document.location.search.substring(1));
+
+                // Envoi du formulaire
+                $('#choisir_paf_form').submit(function (e) {
+                    e.preventDefault();
+                    $('#btnValider').prop('disabled', true);
+
+                    // Envoi du formulaire
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: "POST",
+                        data: $(this).serialize()
+                    }).done(function (data) {
+                        if (!data) {
+                            $('#alert_error').fadeIn(500);
+                            $('#alert_success').hide();
+                            $('#btnValider').prop('disabled', false);
+                        } else {
+                            $('#alert_error').hide();
+                            $('#alert_success_message').html(data);
+                            $('#alert_success').fadeIn(500);
+                            setTimeout(function () {
+                                window.location = './admin_dashboard.html';
+                            }, 2000);
+                        }
+                    }).fail(function () {
+                        $('#alert_error').fadeIn(500);
+                        $('#alert_success').hide();
+                        $('#btnValider').prop('disabled', false);
+                    });
+                });
+            }
+            );
+        </script>
+    </body>
+</html>

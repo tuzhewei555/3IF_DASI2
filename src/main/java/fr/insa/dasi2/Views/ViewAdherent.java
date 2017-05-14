@@ -16,7 +16,10 @@ public class ViewAdherent extends View {
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
             // Récupère l'adhérent
-            Adherent adherent = (Adherent) request.getSession(false).getAttribute("adherent");
+            Adherent adherent = null;
+            if (null != request.getSession(false)) {
+                adherent = (Adherent) request.getSession(false).getAttribute("adherent");
+            }
 
             // Renvoi l'adhérent
             JsonObject jsonResponse = null;

@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Collect'IF - Nouvelle demande</title>
+        <title>Collect'IF - Choisir lieu</title>
 
         <link rel="stylesheet" href="./css/bootstrap.min.css">
         <script src="./js/jquery-3.2.1.min.js"></script>
@@ -15,52 +15,40 @@
     </head>
     <body>
         <div class="container">
-            <h1>Collect'IF &ndash; Nouvelle demande</h1>
+            <h1>Collect'IF &ndash; Choisir lieu</h1>
 
             <div id="alert_error" class="alert alert-danger" style="display: none" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only">Erreur : </span>
-                <span id="alert_error_message">Erreur lors de la création de la demande.</span>
+                <span id="alert_error_message">Erreur lors de la mise à jour du lieu.</span>
             </div>
 
             <div id="alert_success" class="alert alert-success" style="display: none" role="alert">
                 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                Demande créée : <span id="alert_success_demande"></span> !
+                Lieu défini : <span id="alert_success_message"></span>
             </div>
 
             <div class="col-md-6 col-md-offset-3">
-                <h2>Nouvelle demande</h2>
-                <form method="POST" id="nouvelle_demande_form">
-                    <input name="action" value="nouvelle_demande" hidden />
+                <h2>Lieu</h2>
+                <form method="POST" id="choisir_lieu_form">
+                    <input name="action" value="definir_lieu" hidden />
+                    <input name="id" value="-1" hidden id="id_input" />
                     <div class="form-group">
-                        <label for="activities">Activité</label>
-                        <select class="form-control custom" name="activity" id="activities">
+                        <label for="lieux">Lieu</label>
+                        <select class="form-control custom" name="lieu" id="lieux">
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="date">Date</label>
-                        <div class="input-group date" id="datetimepicker">
-                            <input type='text' class="form-control" id="date" name="date" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                    <p class="text-center">ou</p>
+                    <div class="row text-center">
+                        <a role="button" class="btn btn-default btn-info disabled" href="#" id="btn_maps">Choisir sur la carte</a>
                     </div>
-                    <div class="form-group">
-                        <label for="moments">Moment</label>
-                        <select class="form-control custom" name="moment" id="moments">
-                            <option value="matin">Matin</option>
-                            <option value="après-midi">Après-midi</option>
-                            <option value="soir">Soir</option>
-                        </select>
-                    </div>
-                    <div class="row">
+                    <div class="row margin-top-20">
                         <div class="col-md-2">
-                            <a role="button" class="btn btn-default" href="./mon_compte.html">Retour</a>
+                            <a role="button" class="btn btn-default" href="./admin_dashboard.html">Retour</a>
                         </div>
 
                         <div class="col-md-2 col-md-offset-8">
-                            <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider">
+                            <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider" disabled>
                                 <span class="glyphicon glyphicon-ok"></span> Valider
                             </button>
                         </div>
@@ -71,45 +59,49 @@
 
         <script>
             $(document).ready(function () {
-                $('#datetimepicker').datetimepicker({
-                    locale: 'en',
-                    minDate: moment(),
-                    format: "MM/DD/YYYY"
-                });
-
-                // Liste des activités
+                // Liste des lieux
                 $.ajax({
                     url: './ActionServlet',
                     type: "POST",
                     data: {
-                        action: 'activites_all'
+                        action: 'lieux_all'
                     }
                 }).done(function (data) {
                     if (!data) {
-                        $('#alert_error_message').html("Impossible de récupérer la liste des activités.");
+                        $('#alert_error_message').html("Impossible de récupérer la liste des lieux.");
                         $('#alert_error').fadeIn(500);
                         $('#alert_success').hide();
                     } else {
-                        $('#alert_error').hide();
+                        // Màj du champ caché id
+                        $('#id_input').prop('value', document.location.search.substring(1));
 
-                        var acts = $('#activities');
+                        $('#alert_error').hide();
+                        var lieux = $('#lieux');
                         for (var i = 0; i < data.length; i++) {
-                            let suffix = data[i].payant ? ' €' : '';
-                            acts.append($('<option>', {
-                                text: data[i].denomination + suffix,
-                                value: data[i].denomination
+                            lieux.append($('<option>', {
+                                text: data[i].denomination,
+                                value: data[i].id
                             }));
                         }
+                        $('#btnValider').prop('disabled', false);
                     }
                 }).fail(function () {
-                    $('#alert_error_message').html("Impossible de récupérer la liste des activités.");
+                    $('#alert_error_message').html("Impossible de récupérer la liste des lieux.");
                     $('#alert_error').fadeIn(500);
                     $('#alert_success').hide();
                 });
 
+                $('#btn_maps').prop('href', './admin_maps.html?' + document.location.search.substring(1));
+                $('#btn_maps').removeClass('disabled');
+
                 // Envoi du formulaire
-                $('#nouvelle_demande_form').submit(function (e) {
+                $('#choisir_lieu_form').submit(function (e) {
                     e.preventDefault();
+                    if ($('#id_input').prop('value') === '-1') {
+                        $('#alert_error_message').html('Veuillez patienter quelques secondes avant de valider.');
+                        $('#alert_error').fadeIn(500);
+                        $('#alert_success').hide();
+                    }
                     $('#btnValider').prop('disabled', true);
 
                     // Envoi du formulaire
@@ -118,33 +110,28 @@
                         type: "POST",
                         data: $(this).serialize()
                     }).done(function (data) {
-                        console.debug(data);
                         if (!data) {
-                            $('#alert_error_message').html("Erreur lors de la création de la demande.");
+                            $('#alert_error_message').html("Erreur lors de la mise à jour du lieu.");
                             $('#alert_error').fadeIn(500);
                             $('#alert_success').hide();
                             $('#btnValider').prop('disabled', false);
                         } else {
-                            var demande = data.denomination + ", le " + moment(data.date, 'MM/DD/YYYY').locale('fr').format('LL') + " " + data.moment;
-                            
                             $('#alert_error').hide();
-                            $('#alert_success_demande').html(demande);
+                            $('#alert_success_message').html(data);
                             $('#alert_success').fadeIn(500);
                             setTimeout(function () {
-                                window.location = './mon_compte.html';
+                                window.location = './admin_dashboard.html';
                             }, 2000);
                         }
                     }).fail(function () {
-                        $('#alert_error_message').html("Erreur lors de la création de la demande.");
+                        $('#alert_error_message').html("Erreur lors de la mise à jour du lieu.");
                         $('#alert_error').fadeIn(500);
+                        $('#alert_success').hide();
                         $('#btnValider').prop('disabled', false);
                     });
                 });
             }
             );
         </script>
-        <script src="./js/moment.js"></script>
-        <script src="./js/fr.js"></script>
-        <script src="./js/bootstrap-datetimepicker.min.js"></script>
     </body>
 </html>

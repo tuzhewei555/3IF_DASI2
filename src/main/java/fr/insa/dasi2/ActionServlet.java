@@ -3,7 +3,10 @@ package fr.insa.dasi2;
 import dao.JpaUtil;
 import fr.insa.dasi2.Actions.Action;
 import fr.insa.dasi2.Actions.ActionActivitesAll;
+import fr.insa.dasi2.Actions.ActionAdminDefinirLieu;
+import fr.insa.dasi2.Actions.ActionAdminDefinirPaf;
 import fr.insa.dasi2.Actions.ActionAdminEvenementsAll;
+import fr.insa.dasi2.Actions.ActionLieuxAll;
 import fr.insa.dasi2.Actions.ActionLogin;
 import fr.insa.dasi2.Actions.ActionLogout;
 import fr.insa.dasi2.Actions.ActionMesDemandes;
@@ -15,7 +18,9 @@ import fr.insa.dasi2.Views.ViewEmpty;
 import fr.insa.dasi2.Views.ViewAdherent;
 import fr.insa.dasi2.Views.ViewDemandesAll;
 import fr.insa.dasi2.Views.ViewEvenementsAll;
+import fr.insa.dasi2.Views.ViewLieuxAll;
 import fr.insa.dasi2.Views.ViewNouvelleDemande;
+import fr.insa.dasi2.Views.ViewString;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -79,6 +84,18 @@ public class ActionServlet extends HttpServlet {
             case "evenements_all":
                 action = new ActionAdminEvenementsAll();
                 view = new ViewEvenementsAll();
+                break;
+            case "definir_paf":
+                action = new ActionAdminDefinirPaf();
+                view = new ViewString();
+                break;
+            case "definir_lieu":
+                action = new ActionAdminDefinirLieu();
+                view = new ViewString();
+                break;
+            case "lieux_all":
+                action = new ActionLieuxAll();
+                view = new ViewLieuxAll();
                 break;
         }
         if (null != action) {
