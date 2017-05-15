@@ -1,0 +1,95 @@
+<!--
+-- Administration - Choix du lieu d'un évènement
+-->
+
+<script>
+    set_title("Choix du lieu");
+</script>
+
+<div class="col-md-6 col-md-offset-3">
+    <form method="POST" id="choisir_lieu_form">
+        <input name="action" value="definir_lieu" hidden />
+        <input name="id" value="-1" id="id_input" hidden />
+
+        <div class="form-group">
+            <label for="lieux">Lieu</label>
+            <select class="form-control custom" name="lieu" id="lieux">
+            </select>
+        </div>
+        <p class="text-center">ou</p>
+        <div class="row text-center">
+            <a role="button" class="btn btn-default btn-info disabled" href="#" id="btn_maps">Choisir sur la carte</a>
+        </div>
+
+        <div class="row margin-top-20">
+            <div class="col-sm-2">
+                <a role="button" class="btn btn-default" href="./admin_dashboard.html">Retour</a>
+            </div>
+            <div class="col-sm-2 col-sm-offset-8">
+                <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider" disabled>
+                    <span class="glyphicon glyphicon-ok"></span> Valider
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Liste des lieux
+        $.ajax({
+            url: './ActionServlet',
+            type: "POST",
+            data: {
+                action: 'lieux_all'
+            }
+        }).done(function (data) {
+            if (!data) {
+                alert_error("Impossible de récupérer la liste des lieux.");
+            } else {
+                // Màj du champ caché id
+                $('#id_input').prop('value', get_query());
+
+                var lieux = $('#lieux');
+                for (var i = 0; i < data.length; i++) {
+                    lieux.append($('<option>', {
+                        text: data[i].denomination,
+                        value: data[i].id
+                    }));
+                }
+                $('#btnValider').prop('disabled', false);
+            }
+        }).fail(function () {
+            alert_error("Impossible de récupérer la liste des lieux.");
+        });
+
+        // Màj du lien vers Maps
+        $('#btn_maps').prop('href', './admin_maps.html?' + get_query());
+        $('#btn_maps').removeClass('disabled');
+
+        // Envoi du formulaire
+        $('#choisir_lieu_form').submit(function (e) {
+            e.preventDefault();
+            $('#btnValider').prop('disabled', true);
+
+            // Envoi du formulaire
+            $.ajax({
+                url: './ActionServlet',
+                type: "POST",
+                data: $(this).serialize()
+            }).done(function (data) {
+                if (!data) {
+                    alert_error("Erreur lors de la mise à jour du lieu.");
+                    $('#btnValider').prop('disabled', false);
+                } else {
+                    alert_success('Lieu défini : ' + $('#lieux').find('option:selected').text() + '.' + data);
+                    change_page('./admin_dashboard.html');
+                }
+            }).fail(function () {
+                alert_error("Erreur lors de la mise à jour du lieu.");
+                $('#btnValider').prop('disabled', false);
+            });
+        });
+    }
+    );
+</script>

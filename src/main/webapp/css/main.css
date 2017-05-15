@@ -2,6 +2,23 @@
     margin-top:20px;
 }
 
+#btn-refresh {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    background-color: #dddddd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    border: #aaa 1px solid;
+}
+
+#btn-refresh span {
+    transition: transform .8s ease-in-out;
+}
+
+#btn-refresh:hover > span {
+    transform: rotate(360deg);
+}
+
 /* Style personnalisé des <select> */
 select.custom {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20fill%3D%22%23555555%22%20%0A%09%20width%3D%2224px%22%20height%3D%2224px%22%20viewBox%3D%22-261%20145.2%2024%2024%22%20style%3D%22enable-background%3Anew%20-261%20145.2%2024%2024%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cpath%20d%3D%22M-245.3%2C156.1l-3.6-6.5l-3.7%2C6.5%20M-252.7%2C159l3.7%2C6.5l3.6-6.5%22%2F%3E%0A%3C%2Fsvg%3E");
@@ -29,29 +46,23 @@ footer {
     vertical-align: middle;
 }
 
-/* Rends les <tbody> scrollables * /
-thead, tbody, tr, td, th {
+/* Rends les <tbody> scrollables */
+.table-vscroll thead, .table-vscroll tbody, .table-vscroll tr, .table-vscroll td, .table-vscroll th {
     display: block;
 }
-
-tr:after {
+.table-vscroll tr:after {
     content: ' ';
     display: block;
     visibility: hidden;
     clear: both;
 }
-
-thead th {
+.table-vscroll thead th {
     height: 30px;
 }
-
-tbody {
-    height: 800px;
+.table-vscroll tbody {
+    height: 500px;
     overflow-y: auto;
 }
-
-table.row-4 tbody td, table.row-4 thead th {
-    width: 25%;
-    float: left;
+.table-vscroll td, .table-vscroll th {
+    float: left !important;
 }
-*/

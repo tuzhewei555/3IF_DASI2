@@ -28,12 +28,10 @@ public class ActionNouvelleDemande extends Action {
         // TODO: Faire un helper / config
         Adherent adherent = getAdherent(request);
         if (null == adherent) {
-            System.out.println("Non connecté.");
             return;
         }
 
         // Essaie de créer la demande
-        System.out.println("Date: " + new Date(date));
         Demande demande = ServiceMetier.creerDemande(adherent, activity, new Date(date), moment);
 
         // Mets la demande dans la requête

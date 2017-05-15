@@ -1,0 +1,70 @@
+<!--
+-- Administration - Liste des évènements
+-->
+
+<script>
+    set_title("Evènements");
+</script>
+
+<table class="table table-striped table-hover table-vscroll">
+    <thead>
+        <tr>
+            <th class="col-xs-1">#</th>
+            <th class="col-xs-3">Activité</th>
+            <th class="col-xs-3">Date</th>
+            <th class="col-xs-4">Lieu</th>
+            <th class="col-xs-1">PAF</th>
+        </tr>
+    </thead>
+    <tbody id="table_events"></tbody>
+</table>
+<div class="col-xs-2">
+    <a role="button" class="btn btn-default" href="./index.html">Retour</a>
+</div>
+
+<script>
+    $(function () {
+        $.ajax({
+            url: './ActionServlet',
+            type: 'POST',
+            data: {
+                action: 'evenements_all'
+            },
+            dataType: 'json'
+        }).done(function (data) {
+            if (!data) {
+                alert_error('Impossible de récupérer les demandes.');
+            } else {
+                function btnLieu(id) {
+                    return '<a role="button" class="btn btn-default" href="admin_lieu.html?' + id + '">Définir</a>';
+                }
+                function btnPaf(id) {
+                    return '<a role="button" class="btn btn-default" href="admin_paf.html?' + id + '">Définir</a>';
+                }
+
+                var tbody = $('#table_events');
+                data.forEach(function (event) {
+                    var lieu = (!event.lieu) ? btnLieu(event.id) : event.lieu;
+                    var paf = (event.payant) ? (!event.paf || event.paf < 0) ? btnPaf(event.id) : (event.paf + '&nbsp;&euro;') : '';
+                    var date = moment(event.date, 'MM/DD/YYYY').locale('fr');
+
+                    tbody.append(
+                            '<tr>' +
+                            '<th class="col-xs-1">' + event.id + '</th>' +
+                            '<td class="col-xs-3">' + event.activity + '</td>' +
+                            '<td class="col-xs-3"> le ' + date.format('LL') + ' ' + event.moment +
+                            '</td>' +
+                            '<td class="col-xs-4">' + lieu + '</td>' +
+                            '<td class="col-xs-1">' + paf + '</td>' +
+                            '</tr>'
+                            );
+                });
+                update_links();
+            }
+        }).fail(function () {
+            alert_error('Impossible de récupérer les demandes.');
+        });
+    });
+</script>
+<script src="./js/libs/moment.js"></script>
+<script src="./js/libs/fr.js"></script>

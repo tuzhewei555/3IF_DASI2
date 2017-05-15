@@ -22,9 +22,10 @@ public class ActionAdminDefinirLieu extends Action {
             id = Long.parseLong(request.getParameter("id"));
             idLieu = Long.parseLong(request.getParameter("lieu"));
         } catch (NullPointerException | NumberFormatException e) {
-            System.out.println("fail");
             return;
         }
+        System.out.println("id: " + id);
+        System.out.println("idLieu: " + idLieu);
 
         // Essaie de créer la demande
         Evenement event = ServiceMetier.choisirLieu(idLieu, id);
@@ -35,7 +36,7 @@ public class ActionAdminDefinirLieu extends Action {
             msg += " L'évènement est complet et a été créé !";
         }
         request.setAttribute("string", msg);
-        
+
         // PAS A NOUS DE LE FAIRE NORMALEMENT
         // Envoi le mail si l'évènement est créé
         if (null != event) {

@@ -1,0 +1,63 @@
+<!--
+-- Utilisateur - Inscription
+-->
+
+<script>
+    set_title("Inscription");
+</script>
+
+<div class="col-md-6 col-md-offset-3">
+    <form method="POST" id="signup_form">
+        <input name="action" value="signup" hidden />
+        <div class="form-group">
+            <label for="last_name">Nom</label>
+            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Nom">
+        </div>
+        <div class="form-group">
+            <label for="first_name">Prénom</label>
+            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Prénom">
+        </div>
+        <div class="form-group">
+            <label for="address">Adresse</label>
+            <input type="text" class="form-control" name="address" id="address" placeholder="Adresse">
+        </div>
+        <div class="form-group">
+            <label for="email1">Adresse mail</label>
+            <input type="email" class="form-control" name="email1" id="email1" placeholder="Adresse mail">
+        </div>
+        <div class="form-group">
+            <label for="email2">Confirmez l'adresse mail</label>
+            <input type="email" class="form-control" name="email2" id="email2" placeholder="Confirmez l'adresse mail">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-default btn-success">S'inscrire</button>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-2 col-md-offset-3">
+        <a role="button" class="btn btn-default" href="./index.html">Retour</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#signup_form').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: './ActionServlet',
+                type: "POST",
+                data: $(this).serialize()
+            }).done(function (data) {
+                if (!data) {
+                    alert_error("L'inscription a échoué.");
+                } else {
+                    alert_success("Vous êtes désormais inscrit(e), " + data.prenom + " " + data.nom + " #" + data.id + " !");
+                    change_page('./login.html');
+                }
+            }).fail(function () {
+                alert_error("L'inscription a échoué.");
+            });
+        });
+    });
+</script>

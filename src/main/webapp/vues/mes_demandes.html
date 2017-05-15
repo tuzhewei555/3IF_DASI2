@@ -1,0 +1,62 @@
+<!--
+-- Utilisateur - Mes demandes
+-->
+
+<script>
+    set_title("Mes demandes");
+</script>
+
+<table class="table table-striped table-hover table-vscroll">
+    <thead>
+        <tr>
+            <th class="col-xs-5">Activité</th>
+            <th class="col-xs-4">Date</th>
+            <th class="col-xs-2">Moment</th>
+            <th class="col-xs-1">Payant</th>
+        </tr>
+    </thead>
+    <tbody id="table_demandes"></tbody>
+</table>
+<div class="col-xs-2">
+    <a role="button" class="btn btn-default" href="./mon_compte.html">Retour</a>
+</div>
+
+<script>
+    $(function () {
+        $.ajax({
+            url: './ActionServlet',
+            type: 'POST',
+            data: {
+                action: 'mes_demandes'
+            },
+            dataType: 'json'
+        }).done(function (data) {
+            if (!data) {
+                alert_error("Impossible de récupérer les demandes.");
+            } else {
+                var now = moment();
+                var tbody = $('#table_demandes');
+                data.forEach(function (demande) {
+                    var date = moment(demande.date, 'MM/DD/YYYY').locale('fr');
+                    var color = (date.isBefore(now)) ? 'success' : '';
+                    var payant = (demande.payant) ? 'Oui' : 'Non';
+                    tbody.append(
+                            '<tr class="' + color + '">' +
+                            '<td class="col-xs-5">' + demande.activity + '</td>' +
+                            '<td class="col-xs-4">' +
+                            'le ' + date.format('LL') +
+                            ', ' + date.fromNow() +
+                            '</td>' +
+                            '<td class="col-xs-2">' + demande.moment + '</td>' +
+                            '<td class="col-xs-1">' + payant + '</td>' +
+                            '</tr>'
+                            );
+                });
+            }
+        }).fail(function () {
+            alert_error("Impossible de récupérer les demandes.");
+        });
+    });
+</script>
+<script src="./js/libs/moment.js"></script>
+<script src="./js/libs/fr.js"></script>

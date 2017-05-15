@@ -8,27 +8,46 @@
         <title>Collect'IF</title>
 
         <link rel="stylesheet" href="./css/bootstrap.min.css">
-        <script src="./js/jquery-3.2.1.min.js"></script>
-        <script src="./js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="./css/bootstrap-datetimepicker.min.css">
+        <script src="./js/libs/jquery-3.2.1.min.js"></script>
+        <script src="./js/libs/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="./css/main.css">
     </head>
     <body>
+        <button id="btn-refresh" class="btn btn-default" onclick="refresh_page()">
+            <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+
         <div class="container">
-            <h1>Collect'IF &ndash; Connexion</h1>
+            <div class="collapse" id="alert_error">
+                <div class="alert alert-danger" role="alert">
+                    <span class="close" aria-label="Close" onclick="$('#alert_error').collapse('hide');">
+                        <span aria-hidden="true">&times;</span>
+                    </span>
+
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span id="alert_error_message"></span>
+                </div>
+            </div>
+            <div class="collapse" id="alert_success">
+                <div class="alert alert-success" role="alert">
+                    <span class="close" aria-label="Close" onclick="$('#alert_success').collapse('hide');">
+                        <span aria-hidden="true">&times;</span>
+                    </span>
+
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                    <span id="alert_success_message"></span>
+                </div>
+            </div>
+            
             <div class="row">
-                <div class="col-md-6 col-md-offset-3 text-center">
-                    <a class="btn btn-default btn-lg btn-primary" href="login.html" role="button">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Utilisateur
-                    </a>
-                </div>
+                <h1 class="left">Collect'IF</h1>
+                <h3 class="left">&nbsp;&RightAngleBracket;&nbsp;<span id="page_title"></span></h3>
             </div>
-            <div class="row margin-top-20">
-                <div class="col-md-6 col-md-offset-3 text-center">
-                    <a class="btn btn-default btn-lg btn-danger" href="admin_dashboard.html" role="button">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Administrateur
-                    </a>
-                </div>
-            </div>
+
+            <div id="app"></div>
         </div>
+
+        <script src="./js/app.js"></script>
     </body>
 </html>

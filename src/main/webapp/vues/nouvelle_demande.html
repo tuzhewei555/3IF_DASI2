@@ -1,0 +1,109 @@
+<!--
+-- Utilisateur - Nouvelle demande
+-->
+
+<script>
+    set_title("Nouvelle demande");
+</script>
+
+<div class="col-md-6 col-md-offset-3">
+    <form method="POST" id="nouvelle_demande_form">
+        <input name="action" value="nouvelle_demande" hidden />
+        <div class="form-group">
+            <label for="activities">Activité</label>
+            <select class="form-control custom" name="activity" id="activities">
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <div class="input-group date" id="datetimepicker">
+                <input type='text' class="form-control" id="date" name="date" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="moments">Moment</label>
+            <select class="form-control custom" name="moment" id="moments">
+                <option value="matin">Matin</option>
+                <option value="après-midi">Après-midi</option>
+                <option value="soir">Soir</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <a role="button" class="btn btn-default" href="./mon_compte.html">Retour</a>
+            </div>
+
+            <div class="col-sm-2 col-sm-offset-8">
+                <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider">
+                    <span class="glyphicon glyphicon-ok"></span> Valider
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#datetimepicker').datetimepicker({
+            locale: 'en',
+            minDate: moment(),
+            format: "MM/DD/YYYY"
+        });
+
+        // Liste des activités
+        $.ajax({
+            url: './ActionServlet',
+            type: "POST",
+            data: {
+                action: 'activites_all'
+            }
+        }).done(function (data) {
+            if (!data) {
+                alert_error("Impossible de récupérer la liste des activités.");
+            } else {
+                var acts = $('#activities');
+                for (var i = 0; i < data.length; i++) {
+                    let suffix = data[i].payant ? ' €' : '';
+                    acts.append($('<option>', {
+                        text: data[i].denomination + suffix,
+                        value: data[i].denomination
+                    }));
+                }
+            }
+        }).fail(function () {
+            alert_error("Impossible de récupérer la liste des activités.");
+        });
+
+        // Envoi du formulaire
+        $('#nouvelle_demande_form').submit(function (e) {
+            e.preventDefault();
+            $('#btnValider').prop('disabled', true);
+
+            // Envoi du formulaire
+            $.ajax({
+                url: './ActionServlet',
+                type: "POST",
+                data: $(this).serialize()
+            }).done(function (data) {
+                if (!data) {
+                    alert_error("Erreur lors de la création de la demande.");
+                    $('#btnValider').prop('disabled', false);
+                } else {
+                    var demande = data.denomination + ", le " + moment(data.date, 'MM/DD/YYYY').locale('fr').format('LL') + " " + data.moment;
+                    alert_success("Demande crée : " + demande + ".");
+                    change_page('./mon_compte.html');
+                }
+            }).fail(function () {
+                alert_error("Erreur lors de la création de la demande.");
+                $('#btnValider').prop('disabled', false);
+            });
+        });
+    }
+    );
+</script>
+<script src="./js/libs/moment.js"></script>
+<script src="./js/libs/fr.js"></script>
+<script src="./js/libs/bootstrap-datetimepicker.min.js"></script>

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class UserFilter implements Filter {
 
     private final boolean DEBUG = false;
-    
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -34,20 +34,20 @@ public class UserFilter implements Filter {
 
         String[] allowedPages = {
             request.getContextPath() + "/",
-            request.getContextPath() + "/login.html",
-            request.getContextPath() + "/signup.html",
-            request.getContextPath() + "/admin_dashboard.html",
-            request.getContextPath() + "/admin_paf.html",
-            request.getContextPath() + "/admin_lieu.html",
-            request.getContextPath() + "/admin_maps.html",
-        };
+            request.getContextPath() + "/index.html",
+            request.getContextPath() + "/vues/",
+            request.getContextPath() + "/vues/index.html",
+            request.getContextPath() + "/vues/login.html",
+            request.getContextPath() + "/vues/signup.html",
+            request.getContextPath() + "/vues/admin_dashboard.html",
+            request.getContextPath() + "/vues/admin_paf.html",
+            request.getContextPath() + "/vues/admin_lieu.html",
+            request.getContextPath() + "/vues/admin_maps.html",};
         String[] allowedStart = {
             request.getContextPath() + "/ActionServlet",
             request.getContextPath() + "/css/",
             request.getContextPath() + "/js/",
-            request.getContextPath() + "/fonts/",
-            request.getContextPath() + "/images/",
-        };
+            request.getContextPath() + "/fonts/",};
 
         boolean loggedIn = session != null && session.getAttribute("adherent") != null;
         boolean allowed = false;
@@ -74,14 +74,14 @@ public class UserFilter implements Filter {
         if (loggedIn || allowed) {
             chain.doFilter(request, response);
         } else {
-            response.sendRedirect(allowedPages[0]);
+            response.sendRedirect(request.getContextPath() + "/vues/login.html");
         }
     }
 
     @Override
     public void destroy() {
     }
-    
+
     private void log(String msg) {
         if (DEBUG) {
             System.out.println(msg);

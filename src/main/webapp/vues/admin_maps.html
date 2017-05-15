@@ -1,0 +1,133 @@
+<!--
+-- Administration - Choix du lieu - Carte
+-->
+
+<script>
+    set_title("Choix du lieu - Carte");
+</script>
+
+<div class="col-md-12">
+    <form method="POST" id="choisir_lieu_form">
+        <input name="action" value="definir_lieu" hidden />
+        <input name="id" value="-1" hidden id="id_input" />
+        <input name="lieu" value="-1" hidden id="lieu" />
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="lieu_txt">Lieu</label>
+                <input type="text" class="form-control" id="lieu_txt" placeholder="Choisissez un lieu sur la carte." readonly />
+            </div>
+            <div id="map" class="col-md-8"></div>
+        </div>
+
+        <div class="row margin-top-20">
+            <div class="col-sm-2">
+                <a role="button" class="btn btn-default" href="./admin_dashboard.html">Retour</a>
+            </div>
+
+            <div class="col-sm-2 col-sm-offset-8">
+                <button type="submit" class="btn btn-default btn-success btn-lg" id="btnValider" disabled>
+                    <span class="glyphicon glyphicon-ok"></span> Valider
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Envoi du lieu
+        $('#choisir_lieu_form').submit(function (e) {
+            e.preventDefault();
+            $('#btnValider').prop('disabled', true);
+
+            // Envoi du formulaire
+            $.ajax({
+                url: './ActionServlet',
+                type: "POST",
+                data: $(this).serialize()
+            }).done(function (data) {
+                if (!data) {
+                    alert_error("Erreur lors de la mise à jour du lieu.");
+                    $('#btnValider').prop('disabled', false);
+                } else {
+                    alert_success('Lieu défini : ' + $('#lieu_txt').prop('value') + '.' + data);
+                    change_page('./admin_dashboard.html');
+                }
+            }).fail(function () {
+                alert_error("Erreur lors de la mise à jour du lieu.");
+                $('#btnValider').prop('disabled', false);
+            });
+        });
+    }
+    );
+</script>
+<script>
+    var map;
+
+    function attachInfoWindow(marker, infoWindow, html) {
+        marker.addListener('click', function () {
+            infoWindow.setContent(html);
+            infoWindow.open(map, this);
+        });
+    }
+
+    function definir_lieu(id, nom) {
+        $('#lieu').prop('value', id);
+        $('#lieu_txt').prop('value', nom);
+        $('#btnValider').prop('disabled', false);
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 45.7601424, lng: 4.8961779},
+            zoom: 13
+        });
+        var infoWindow = new google.maps.InfoWindow({
+            content: '<div></div>'
+        });
+
+        $.ajax({
+            url: './ActionServlet',
+            type: 'POST',
+            data: {
+                action: 'lieux_all'
+            },
+            dataType: 'json'
+        }).done(function (data) {
+            if (!data) {
+                alert_error('Impossible de récupérer les lieux.');
+                $('#btnValider').prop('disabled', true);
+                return;
+            }
+
+            // Màj du champ caché id
+            $('#id_input').prop('value', get_query());
+
+            data.forEach(function (resto) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: {lat: resto.latitude, lng: resto.longitude},
+                    title: resto.denomination
+                });
+                attachInfoWindow(
+                        marker, infoWindow,
+                        '<div>' +
+                        '<strong>' +
+                        '<a href="#" onclick="definir_lieu(' + resto.id + ', \'' + resto.denomination + '\')">' + resto.denomination + '</a>' +
+                        '</strong><br/>' +
+                        resto.adresse + '<br/>' +
+                        '<i>' + resto.type + '</i><br/>' +
+                        '<br/>' +
+                        '<a role="button" class="btn btn-default" href="#" onclick="definir_lieu(' + resto.id + ', \'' + resto.denomination + '\')">Choisir</a>' +
+                        '</div>'
+                        );
+            });
+        }).fail(function () {
+            alert_error('Impossible de récupérer les lieux.');
+            $('#btnValider').prop('disabled', true);
+        });
+    }
+
+</script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAklw96N9rLd93ubr-F04CN7qi2ryKayAc&callback=initMap"></script>

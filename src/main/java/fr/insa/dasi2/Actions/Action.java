@@ -19,4 +19,8 @@ public abstract class Action {
         return (Adherent) session.getAttribute("adherent");
     }
 
+    public boolean loggedIn(HttpServletRequest request) {
+        return null != getAdherent(request);
+    }
+    
 }

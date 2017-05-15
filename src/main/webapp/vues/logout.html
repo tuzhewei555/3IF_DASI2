@@ -1,0 +1,35 @@
+<!--
+-- Utilisateur - Déconnexion
+-->
+
+<script>
+    set_title("Déconnexion");
+</script>
+
+<div id="alert_error" class="alert alert-danger" style="display: none" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Erreur : </span>
+
+</div>
+
+<div id="alert_success" class="alert alert-success" style="display: none" role="alert">
+    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+    Vous êtes déconnecté.
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: './ActionServlet',
+            type: "POST",
+            data: {
+                action: 'logout'
+            }
+        }).done(function (data) {
+            alert_success("Vous êtes déconnecté.");
+            change_page('./index.html');
+        }).fail(function () {
+            alert_error("Déconnexion impossible.");
+        });
+    });
+</script>

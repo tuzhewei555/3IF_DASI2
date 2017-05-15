@@ -1,0 +1,61 @@
+<!--
+-- Utilisateur - Connexion
+-->
+
+<script>
+    set_title("Connexion");
+</script>
+
+<div class="col-md-6 col-md-offset-3">
+    <form method="POST" id="loginform">
+        <input name="action" value="login" hidden />
+        <div class="form-group">
+            <label for="email">Adresse mail</label>
+            <input type="email" class="form-control" name="email" placeholder="Adresse mail">
+        </div>
+        <div class="form-group">
+            <label for="email">Identifiant</label>
+            <input type="text" class="form-control" name="identifiant" placeholder="Identifiant">
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-default btn-success">Connexion</button>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-xs-12 margin-top-20">
+        <div class="text-center">
+            <p>Pas encore inscrit ?</p>
+            <a class="btn btn-default" href="signup.html" role="button">
+                Inscription
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2 col-md-offset-3">
+        <a role="button" class="btn btn-default" href="./index.html">Retour</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#loginform').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: './ActionServlet',
+                type: "POST",
+                data: $(this).serialize()
+            }).done(function (data) {
+                if (!data) {
+                    alert_error("La connexion a échoué.");
+                } else {
+                    alert_success("Bienvenue, " + data.prenom + " " + data.nom + ".");
+                    change_page('./mon_compte.html');
+                }
+            }).fail(function () {
+                alert_error("La connexion a échoué.");
+            });
+        });
+    });
+</script>
