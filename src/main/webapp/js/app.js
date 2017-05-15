@@ -1,3 +1,7 @@
+/**
+ * app.js - En charge de la Single Webpage App
+ */
+
 var currentURL = '';
 
 function update_links() {
@@ -14,8 +18,14 @@ function change_page(url) {
         url: './vues/' + currentURL,
         type: "GET"
     }).done(function (data) {
-        $('#app').hide().html(data).fadeIn(300);
-        update_links();
+        if (data) {
+            $('#app').hide().html(data).fadeIn(300);
+            update_links();
+        } else {
+            alert_error("Impossible de récupérer la page.");
+        }
+    }).fail(function () {
+        alert_error("Impossible de récupérer la page.");
     });
 }
 
