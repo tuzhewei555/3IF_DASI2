@@ -1,26 +1,8 @@
 package fr.insa.dasi2;
 
 import dao.JpaUtil;
-import fr.insa.dasi2.Actions.Action;
-import fr.insa.dasi2.Actions.ActionActivitesAll;
-import fr.insa.dasi2.Actions.ActionAdminDefinirLieu;
-import fr.insa.dasi2.Actions.ActionAdminDefinirPaf;
-import fr.insa.dasi2.Actions.ActionAdminEvenementsAll;
-import fr.insa.dasi2.Actions.ActionLieuxAll;
-import fr.insa.dasi2.Actions.ActionLogin;
-import fr.insa.dasi2.Actions.ActionLogout;
-import fr.insa.dasi2.Actions.ActionMesDemandes;
-import fr.insa.dasi2.Actions.ActionNouvelleDemande;
-import fr.insa.dasi2.Actions.ActionSignup;
-import fr.insa.dasi2.Views.View;
-import fr.insa.dasi2.Views.ViewActivitesAll;
-import fr.insa.dasi2.Views.ViewEmpty;
-import fr.insa.dasi2.Views.ViewAdherent;
-import fr.insa.dasi2.Views.ViewDemandesAll;
-import fr.insa.dasi2.Views.ViewEvenementsAll;
-import fr.insa.dasi2.Views.ViewLieuxAll;
-import fr.insa.dasi2.Views.ViewNouvelleDemande;
-import fr.insa.dasi2.Views.ViewString;
+import fr.insa.dasi2.Actions.*;
+import fr.insa.dasi2.Views.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,16 +30,15 @@ public class ActionServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        String todo = request.getParameter("action");
-        if (null == todo) {
+        String strAction = request.getParameter("action");
+        if (null == strAction) {
             return;
         }
 
-        // TODO: Créer un filtre
         // Récupère l'action et la vue
         Action action = null;
         View view = new ViewEmpty();
-        switch (todo) {
+        switch (strAction) {
             case "login":
                 action = new ActionLogin();
                 view = new ViewAdherent();

@@ -25,7 +25,6 @@ public class ActionNouvelleDemande extends Action {
         }
 
         // Si pas connecté, on ne fait rien
-        // TODO: Faire un helper / config
         Adherent adherent = getAdherent(request);
         if (null == adherent) {
             return;
